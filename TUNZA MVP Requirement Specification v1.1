@@ -1,0 +1,261 @@
+# TUNZA
+
+## Minimum Viable Product — Requirements Specification v1.1
+
+**Organisation:** Zest Technologies
+**Product:** Tunza Maternal Health SMS Companion
+**Initial location:** Kasese District, Uganda
+**Proposed pilot facilities:** St. Paul's Hospital Kasese and Mt St Mary's Hospital Kasese
+**Status:** Planning — not approved for live patient enrolment
+
+### 1. Product vision
+
+Tunza is a maternal-health communication and care coordination platform that connects pregnant women, Village Health Teams (VHTs), and participating healthcare facilities through affordable mobile messaging and secure web dashboards.
+
+Its initial mission is to improve access to appropriate pregnancy information, support scheduled antenatal care attendance, and make community follow-up more manageable.
+
+Tunza provides supplementary communication and coordination. It does not replace medical consultations, professional diagnosis, or emergency services.
+
+### 2. MVP objectives
+
+The first release must demonstrate that Tunza can:
+
+1. Register eligible participants with verifiable consent.
+2. Maintain a pregnancy record associated with a participating healthcare facility.
+3. Schedule weekly educational messages and reminders for confirmed ANC appointments.
+4. Deliver only clinically approved information in English or Luganda.
+5. Track message transmission and delivery status.
+6. Give authorised VHTs and facility staff appropriate follow-up tools.
+7. Respect opt-out requests and minimise disclosure of health information.
+8. Generate reliable operational reports for evaluating the pilot.
+
+### 3. Users and access permissions
+
+| User role                     | Core responsibilities                                                                                          |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Pregnant woman                | Receive SMS information and reminders; request assistance or withdraw participation through available channels |
+| VHT / Community Health Worker | Explain participation, record consent, register women, maintain assigned follow-up information                 |
+| Midwife / Healthcare Worker   | Confirm appointment information, record attendance and missed contacts, review assigned follow-up cases        |
+| Clinical Content Reviewer     | Review, approve, revise or retire educational messages and translations                                        |
+| Facility Administrator        | Manage authorised facility accounts, assignments, facility-level operations and reports                        |
+| Zest Platform Administrator   | Configure participating facilities, infrastructure, access controls, message services and platform operations  |
+| Programme Manager / Analyst   | View appropriately aggregated pilot performance indicators without unrestricted clinical-record access         |
+
+Each user account must have individually assigned permissions.
+
+**Access rules:**
+
+- A healthcare worker may access only the patients and activities required for their assigned responsibilities.
+- Facility staff must not automatically access another hospital's patient records.
+- VHTs must access only their assigned participants.
+- Clinical content reviewers must not require patient-record access to approve educational templates.
+- Zest technical administrators must not receive unrestricted access to clinical records merely because they operate the system.
+- All sensitive access and administrative actions must be auditable.
+
+### 4. Core functional requirements
+
+**FR-01 — Facility and staff management**
+
+- Register approved healthcare facilities and their authorised staff.
+- Assign staff to facilities, roles and patient follow-up responsibilities.
+- Support account deactivation, permission changes and secure password recovery.
+- Maintain strict facility-level data separation.
+
+**FR-02 — Patient registration and consent**
+
+- Allow an authorised VHT or healthcare worker to enrol an eligible adult pregnant woman.
+- Capture minimum necessary contact, preferred language, facility and pregnancy information.
+- Record the consent statement version, language, method, actor, date and verification evidence.
+- Provide clear withdrawal and contact-preference options.
+- Prevent health messages from being dispatched unless valid consent is recorded.
+
+For the initial live pilot, enrolment involving minors remains deferred until a clinically and legally approved consent pathway exists.
+
+**FR-03 — Pregnancy episode management**
+
+- Create a separate pregnancy episode linked to a patient.
+- Record last menstrual period when known, estimated delivery date, pregnancy dating source and assigned facility.
+- Allow authorised clinical staff to correct the estimated delivery date, preserving the change history.
+- Recalculate gestational age and future scheduling after approved corrections.
+- Support active, paused, completed and withdrawn communication states.
+- Stop antenatal messages following confirmed pregnancy completion or withdrawal, without implying a clinical outcome from messaging alone.
+
+**FR-04 — ANC appointment management**
+
+- Maintain a configurable reference schedule based on WHO and Uganda Ministry of Health guidance.
+- Support late enrolment and individualised appointment plans.
+- Record facility-confirmed appointment dates rather than assuming standard gestational dates are booked appointments.
+- Support appointment statuses: scheduled, confirmed, attended, missed, cancelled and rescheduled.
+- Produce lists of participants requiring authorised human follow-up.
+
+**FR-05 — Educational content management**
+
+- Maintain gestational-week-appropriate messages in English and Luganda.
+- Store message versions, translations, clinical approval status and approving reviewer.
+- Prevent unapproved templates from entering the dispatch process.
+- Support message retirement and correction without modifying the source code.
+- Avoid generating unreviewed medical advice with artificial intelligence.
+
+**FR-06 — SMS scheduling and delivery**
+
+- Schedule weekly messages according to pregnancy stage and participant preferences.
+- Schedule reminders for confirmed appointments using configurable lead times.
+- Support preferred delivery hours and privacy-sensitive wording.
+- Use the Africa's Talking sandbox during development.
+- Persist a unique dispatch record for each intended message occurrence.
+- Process gateway responses, delivery reports, failures and controlled retries.
+- Limit SMS volume and maintain expenditure visibility.
+
+**FR-07 — Withdrawal and opt-out**
+
+- Permit authorised staff to record a withdrawal immediately.
+- Suppress future queued messages after withdrawal.
+- Support SMS-based STOP handling in the two-way sandbox.
+- Establish a usable alternative withdrawal channel before any live, one-way messaging pilot.
+
+A one-way sender ID must not advertise an SMS STOP function that cannot actually receive replies.
+
+**FR-08 — Two-way communication (sandbox MVP)**
+
+- Simulate inbound patient replies and record their status.
+- Handle basic appointment confirmation, assistance requests and opt-out keywords.
+- Route messages that cannot be interpreted reliably into a review queue.
+- Prevent ambiguous replies from automatically altering the wrong patient's records.
+
+Real two-way messaging remains disabled until its costs, shortcode arrangements and human support procedures are approved.
+
+**FR-09 — Danger-sign communication and escalation**
+
+- Maintain clinically approved emergency-guidance messages.
+- Test danger-sign keyword recognition and escalation routing in a controlled environment.
+- Provide a restricted facility review queue with acknowledgement and action status.
+- Require an agreed staffing model, escalation protocol, verified contact arrangements and documented responsibilities before activating live escalation.
+- Never describe an unstaffed or unvalidated automated feature as an emergency response service.
+
+**FR-10 — Reporting and audit**
+
+- Provide facility-specific operational dashboards.
+- Monitor registrations, valid consents, scheduled messages, gateway statuses, appointments, opt-outs and unresolved follow-ups.
+- Record significant record changes, access events and message actions.
+- Support aggregated pilot reporting without unnecessary personal identification.
+
+### 5. Essential non-functional requirements
+
+| Category        | Requirement                                                                                                            |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Security        | HTTPS, strong authentication, least-privilege authorisation, protected secrets and encryption of sensitive stored data |
+| Privacy         | Data minimisation, consent evidence, withdrawal controls, approved retention rules and safeguards for shared phones    |
+| Reliability     | Durable message scheduling, retry controls, failure reporting and recovery from service interruption                   |
+| Availability    | Accessible staff dashboards and reliable scheduled processing appropriate to the agreed pilot operating model          |
+| Performance     | Responsive pages on ordinary mobile devices and low-bandwidth connections                                              |
+| Localization    | Accurate English and Luganda content, predictable SMS encoding and segment costs                                       |
+| Auditability    | Traceable changes and access without exposing sensitive information unnecessarily in technical logs                    |
+| Maintainability | Modular services, configurable schedules and message templates independent of software deployments                     |
+| Recovery        | Verified database backups and a tested restoration procedure                                                           |
+| Cost control    | Spending limits, delivery monitoring and the ability to pause outgoing messages centrally                              |
+
+### 6. Conceptual database requirements
+
+The database should contain the following principal entities:
+
+| Entity                            | Purpose                                                      |
+| --------------------------------- | ------------------------------------------------------------ |
+| Facility                          | Participating healthcare institution                         |
+| User / Role / Assignment          | Secure accounts, privileges and facility associations        |
+| Patient                           | Minimal participant identity and communication preferences   |
+| PregnancyEpisode                  | Pregnancy-specific dates, status and longitudinal history    |
+| ConsentEvent                      | Evidence of consent, withdrawal or consent updates           |
+| Appointment                       | Facility-confirmed ANC schedule and attendance               |
+| MessageTemplate / TemplateVersion | Clinically reviewed educational content                      |
+| ClinicalApproval                  | Reviewer decisions and version approval                      |
+| MessageDispatch                   | Planned sending, attempts, gateway IDs and delivery statuses |
+| InboundMessage                    | Sandbox replies and future production replies                |
+| FollowUp / Escalation             | Facility-managed cases and their actions                     |
+| AuditEvent                        | Security- and accountability-relevant activity               |
+
+**Important modelling rules:**
+
+- A patient may have multiple pregnancy episodes over time.
+- A phone number must not serve as the sole unique patient identifier, because phones may be shared.
+- Ambiguous inbound SMS must never be attributed to a particular pregnancy automatically.
+- A patient may transfer between participating facilities, with controlled reassignment and an audit trail.
+- A separate scheduling occurrence identifier must distinguish recurring messages and reminders.
+- Database uniqueness must not be represented as a guarantee of exactly-once delivery through a telecom gateway.
+
+The schema should permit future addition of postnatal care episodes and newborn records without activating those functions in the initial MVP.
+
+### 7. Proposed technical foundation
+
+| Layer               | Preferred initial technology                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------- |
+| Staff web interface | React                                                                                          |
+| Backend API         | Python with Flask                                                                              |
+| Database            | PostgreSQL                                                                                     |
+| Message scheduling  | Persistent database-backed jobs and a supervised worker                                        |
+| SMS integration     | Africa's Talking sandbox                                                                       |
+| Authentication      | Secure individual staff accounts with role- and facility-based authorisation                   |
+| Deployment          | Low-cost managed hosting with encrypted connections, backups and reliable scheduled processing |
+
+This remains an architectural proposal, not an irreversible technology decision.
+
+The initial system should not require Redis, Celery, microservices, a separate patient mobile application or advanced artificial intelligence unless testing identifies a genuine need.
+
+### 8. MVP acceptance criteria
+
+The MVP will be ready for controlled technical demonstration when:
+
+- An authorised staff user can register a fictional patient and record an auditable consent event.
+- A patient can be assigned to one pilot facility without exposing records to staff at the other facility.
+- Gestational dates and appointments can be created and revised safely.
+- Only approved message versions can enter the outbound queue.
+- The scheduler sends appropriate simulated messages without creating duplicate dispatch records for repeated job executions.
+- Sandbox delivery callbacks update message status accurately, including delayed and repeated callbacks.
+- An opt-out event prevents further outgoing dispatches.
+- Sandbox inbound replies enter the correct review workflow without unsafe patient identification.
+- Facility dashboards reflect test activity correctly.
+- Security, backup and restoration tests pass.
+
+Technical completion does not constitute approval to contact real pregnant women.
+
+### 9. Excluded from initial MVP
+
+The following are explicitly deferred:
+
+- Automatic medical diagnosis and treatment recommendations.
+- Automated emergency triage presented as a substitute for clinical care.
+- Live two-way SMS before provider and staffing approval.
+- Patient smartphone application and WhatsApp communication.
+- Full hospital electronic medical record integration.
+- National health information exchange or DHIS2 integration.
+- Payments, insurance claims and billing.
+- Public access to sensitive patient or facility information.
+- Postnatal messaging and newborn-care workflows.
+- Nationwide deployment and unsupported languages.
+
+### 10. Pilot measurement framework
+
+The pilot should evaluate both technical performance and care coordination.
+
+**Operational measures:** enrolled and consented participants, successfully dispatched messages, confirmed delivery reports, failures, opt-outs and SMS cost per participant.
+
+**Care coordination measures:** scheduled ANC contacts, confirmed attendance, missed appointments, completed staff follow-ups and unresolved cases.
+
+**Safety and privacy measures:** consent deficiencies, incorrect-recipient incidents, inappropriate message disclosure, unhandled reply cases and unresolved escalation events.
+
+Final targets and baseline measurement methods must be agreed with participating healthcare partners before the live pilot.
+
+### 11. Stage gates
+
+**Gate A — Specification approved:** Product scope, architecture, data model and permissions are agreed.
+
+**Gate B — Technical demonstration:** All MVP acceptance criteria pass using synthetic patient data and sandbox messaging.
+
+**Gate C — Clinical and regulatory approval:** Qualified clinical reviewers, participating facility agreements, privacy and data-processing requirements, and approved message content are in place.
+
+**Gate D — Operational readiness:** Staff are trained; withdrawal, incident response, support hours, backups, message expenditure and patient communication channels are verified.
+
+**Gate E — Controlled live pilot:** Begin only after Gates A–D are satisfied, with a deliberately limited population and agreed monitoring procedures.
+
+**Gate F — Expansion evaluation:** Review pilot evidence, correct defects, and decide whether to extend to more facilities, languages, postnatal care or additional communications channels.
+
+**Document status:** Proposed requirements baseline for stakeholder review. No implementation or live patient processing is authorised by this document.
