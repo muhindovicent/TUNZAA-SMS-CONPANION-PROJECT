@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: tunza
+      POSTGRES_USER: tunza
+      POSTGRES_PASSWORD: tunza
+    ports:
+      - "5432:5432"
+    volumes:
+      - tunza-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tunza -d tunza"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    env_file:
+      - .env
+    environment:
+      APP_ENV: development
+      DATABASE_URL: postgresql+psycopg://tunza:tunza@db:5432/tunza
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    command:
+      - sh
+      - -c
+      - alembic upgrade head && gunicorn --bind 0.0.0.0:8000 --workers 2 tunza.wsgi:app
+
+volumes:
+  tunza-db:

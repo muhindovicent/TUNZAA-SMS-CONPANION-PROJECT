@@ -1,0 +1,98 @@
+@layer tokens {
+  :root {
+    color-scheme: light;
+
+    --tz-color-primary: #c1613c;
+    --tz-color-primary-strong: #a8532f;
+    --tz-color-sage: #6f8d64;
+    --tz-color-sage-light: #8fae81;
+    --tz-color-ink: #4a3428;
+    --tz-color-surface: #fbf3e9;
+
+    --tz-color-success: #4b7a55;
+    --tz-color-warning: #c98a2d;
+    --tz-color-danger: #b23a2e;
+    --tz-color-info: #4e7a93;
+
+    --tz-color-success-soft: #e7efe8;
+    --tz-color-warning-soft: #f7ecd9;
+    --tz-color-danger-soft: #f6e3e0;
+    --tz-color-info-soft: #e5eef2;
+
+    --tz-color-surface-raised: #ffffff;
+    --tz-color-surface-muted: #f4e8db;
+    --tz-color-border: #d9c6b4;
+    --tz-color-border-strong: #b99f8a;
+    --tz-color-text-muted: #6f5b4d;
+
+    --tz-font-heading: "Poppins", "Segoe UI", system-ui, sans-serif;
+    --tz-font-body: "Poppins", "Segoe UI", system-ui, sans-serif;
+    --tz-font-mono: ui-monospace, "Cascadia Mono", "Consolas", monospace;
+
+    --tz-font-size-100: 0.75rem;
+    --tz-font-size-200: 0.875rem;
+    --tz-font-size-300: 1rem;
+    --tz-font-size-400: 1.125rem;
+    --tz-font-size-500: 1.375rem;
+    --tz-font-size-600: 1.75rem;
+    --tz-font-size-700: 2.25rem;
+
+    --tz-line-height-tight: 1.2;
+    --tz-line-height-normal: 1.55;
+    --tz-font-weight-regular: 400;
+    --tz-font-weight-medium: 500;
+    --tz-font-weight-bold: 700;
+
+    --tz-space-100: 0.25rem;
+    --tz-space-200: 0.5rem;
+    --tz-space-300: 0.75rem;
+    --tz-space-400: 1rem;
+    --tz-space-500: 1.5rem;
+    --tz-space-600: 2rem;
+    --tz-space-700: 3rem;
+    --tz-space-800: 4rem;
+
+    --tz-radius-100: 0.25rem;
+    --tz-radius-200: 0.5rem;
+    --tz-radius-300: 0.75rem;
+    --tz-radius-400: 1rem;
+    --tz-radius-pill: 9999px;
+
+    --tz-shadow-100: 0 1px 2px rgb(74 52 40 / 12%);
+    --tz-shadow-200: 0 6px 20px rgb(74 52 40 / 14%);
+
+    --tz-focus-ring-width: 3px;
+    --tz-focus-ring-color: var(--tz-color-info);
+    --tz-focus-ring: var(--tz-focus-ring-width) solid var(--tz-focus-ring-color);
+    --tz-touch-target: 44px;
+    --tz-content-measure: 68ch;
+
+    --tz-duration-fast: 120ms;
+    --tz-duration-normal: 220ms;
+    --tz-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+    --tz-z-header: 100;
+    --tz-z-dialog: 1000;
+    --tz-z-toast: 1100;
+
+    --tz-container-inline: inline-size;
+  }
+
+  [data-tenant-theme] {
+    --tz-color-primary: var(--tz-tenant-primary, #c1613c);
+    --tz-color-primary-strong: var(--tz-tenant-primary-strong, #a8532f);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: light;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --tz-duration-fast: 0ms;
+      --tz-duration-normal: 0ms;
+    }
+  }
+}
